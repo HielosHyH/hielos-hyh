@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fábrica de Hielos HyH</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,600&display=swap');
+
+  :root{
+    --bg:#070D13;
+    --surface:#0E161E;
+    --frost:#121C26;
+    --ink:#EEF5F9;
+    --ink-soft:#87A0AC;
+    --line:#1D2E38;
+    --accent:#1789C4;
+    --accent-bright:#57C6F0;
+    --accent-deep:#0C5A87;
+    --on-accent:#FFFFFF;
+    --logo-blue:#0E70B0;
+    --shadow: 0 24px 50px -22px rgba(0,0,0,.65);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;}
+  h1,h2,h3{
+    font-family:'Montserrat', sans-serif;
+    font-weight:800;
+    text-transform:uppercase;
+    text-wrap:balance;
+    margin:0;
+    line-height:1.02;
+    letter-spacing:-.01em;
+  }
+  .eyebrow{
+    font-family:'Montserrat', sans-serif;
+    font-size:.74rem;
+    font-weight:700;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--accent-bright);
+  }
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+  a{color:inherit;}
+  button{font:inherit;}
+
+  /* ---------- header ---------- */
+  header{
+    position:absolute; top:0; left:0; right:0; z-index:40;
+    background:transparent;
+  }
+  .header-row{
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+    gap:24px; padding:18px 32px;
+  }
+  .nav-links{
+    display:flex; align-items:center; justify-content:center; gap:30px;
+    list-style:none; margin:0; padding:0;
+  }
+  .nav-links a{
+    font-size:.80rem; font-weight:600; letter-spacing:.12em;
+    text-transform:uppercase; text-decoration:none;
+    color:#DDEFF6; opacity:.85;
+    transition:opacity .15s;
+  }
+  .nav-links a:hover{ opacity:1; }
+  @media (max-width:860px){
+    .nav-links{ display:none; }
+    .header-row{ display:flex; justify-content:space-between; padding:14px 20px; }
+    .logo-mark{ height:72px; }
+    .header-actions{ gap:7px; }
+    .icon-btn{ width:34px; height:34px; }
+    .icon-btn svg{ width:15px; height:15px; }
+    .whatsapp-chip{ gap:6px; padding:7px 14px 7px 10px; font-size:.75rem; }
+    .whatsapp-chip svg{ width:15px; height:15px; }
+  }
+  .brand{ display:flex; align-items:center; gap:13px; text-decoration:none; justify-self:start; }
+  .logo-mark{ height:96px; width:auto; flex:none; display:block; }
+  .brand-name{
+    font-family:'Montserrat', sans-serif;
+    font-weight:800;
+    font-size:1.25rem;
+    letter-spacing:.01em;
+    color:var(--ink);
+    line-height:1;
+    display:block;
+  }
+  .brand-sub{
+    font-family:'Montserrat', sans-serif;
+    font-size:.52rem;
+    font-weight:600;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent-bright);
+  }
+  .header-actions{ display:flex; align-items:center; justify-content:flex-end; gap:9px; }
+  .icon-btn{
+    display:flex; align-items:center; justify-content:center;
+    width:42px; height:42px; border-radius:50%;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    text-decoration:none;
+    transition:border-color .15s, color .15s, transform .15s;
+  }
+  .icon-btn:hover{ border-color:var(--accent); color:var(--accent-bright); transform:translateY(-1px); }
+  .icon-btn svg{ width:19px; height:19px; }
+  .whatsapp-chip{
+    display:flex; align-items:center; gap:9px;
+    padding:9px 18px 9px 13px; border-radius:999px;
+    background:var(--accent); color:var(--on-accent);
+    text-decoration:none; font-weight:700; font-size:.9rem;
+    box-shadow:var(--shadow);
+    transition:background .15s, transform .15s;
+  }
+  .whatsapp-chip:hover{ background:var(--accent-deep); transform:translateY(-1px); }
+  .whatsapp-chip svg{ width:19px; height:19px; }
+
+  /* ---------- page-wide gradient mesh ---------- */
+  .page-mesh{
+    position:fixed; inset:0; z-index:-1; overflow:hidden;
+    background:#050B10;
+  }
+  .blob{ position:absolute; border-radius:50%; filter:blur(80px); }
+  .blob-1{
+    width:56vw; height:56vw; left:-14vw; top:-18vh;
+    background:radial-gradient(circle at 35% 35%, var(--accent-bright), transparent 68%);
+    opacity:.45;
+  }
+  .blob-2{
+    width:60vw; height:60vw; left:6vw; top:32vh;
+    background:radial-gradient(circle at 50% 50%, #10A57E, transparent 70%);
+    opacity:.4;
+  }
+  .blob-3{
+    width:44vw; height:44vw; right:-12vw; top:2vh;
+    background:radial-gradient(circle at 60% 40%, var(--accent-deep), transparent 70%);
+    opacity:.5;
+  }
+  .blob-4{
+    width:34vw; height:34vw; right:10vw; bottom:-10vh;
+    background:radial-gradient(circle, var(--accent), transparent 72%);
+    opacity:.4;
+  }
+  .blob-5{
+    width:38vw; height:38vw; left:22vw; bottom:-14vh;
+    background:radial-gradient(circle at 40% 60%, #10A57E, transparent 70%);
+    opacity:.35;
+  }
+
+  /* ---------- hero / extended banner ---------- */
+  .hero{
+    position:relative;
+    min-height:min(78vh, 660px);
+    display:flex; align-items:flex-start;
+  }
+  .hero-inner{
+    position:relative; z-index:2;
+    padding:min(13vw,185px) 32px 30px;
+    width:100%;
+    max-width:1180px; margin:0 auto;
+    color:#F4FAFB;
+  }
+  .hero-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    border:1px solid rgba(87,198,240,.4);
+    background:rgba(87,198,240,.08);
+    border-radius:999px; padding:7px 16px 7px 12px;
+    margin-bottom:18px;
+  }
+  .hero-badge svg{ width:14px; height:14px; color:var(--accent-bright); }
+  .hero-badge span{
+    font-size:.68rem; font-weight:500; letter-spacing:.2em;
+    color:var(--accent-bright);
+  }
+  .hero h1{
+    font-size:clamp(1rem, 3vw, 3rem);
+    font-weight:800;
+    text-transform:none;
+    letter-spacing:-.01em;
+    color:#FFFFFF;
+  }
+  .hero h1 em{ font-style:normal; font-weight:800; color:#FFFFFF; }
+  .hero h1 em.h1-accent{ color:var(--accent-bright); }
+  .hero-content-row{ display:flex; align-items:stretch; gap:40px; flex-wrap:wrap; }
+  .hero-copy{ flex:0 1 auto; width:fit-content; min-width:240px; }
+  .hero-copy p{ width:0; min-width:100%; }
+  .hero-photo-wrap{ display:none; flex:1 1 0; min-width:260px; margin-right:calc(-1 * max(0px, (100vw - 1180px) / 2)); }
+  .hero-title-photo{
+    width:100%; height:100%;
+    object-fit:contain; display:block;
+    transform:translateY(-2.8vw);
+  }
+  @media (min-width:640px){
+    .hero-photo-wrap{ display:block; }
+  }
+  .hero p{
+    max-width:none; margin-top:20px;
+    font-size:1.05rem; font-weight:400; line-height:1.6;
+    color:#C9DEE6;
+  }
+  .hero-cta{ display:flex; flex-wrap:wrap; gap:14px; margin-top:34px; }
+  .hero-arrow{
+    position:fixed; right:22px; bottom:92px; z-index:50;
+    width:48px; height:48px; border-radius:50%; flex:none;
+    border:1px solid var(--line);
+    background:var(--surface);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ink); text-decoration:none; box-shadow:var(--shadow);
+    opacity:0; pointer-events:none; transform:translateY(8px);
+    transition:opacity .2s, transform .2s, border-color .15s, background .15s;
+  }
+  .hero-arrow.is-visible{ opacity:1; pointer-events:auto; transform:translateY(0); }
+  .hero-arrow:hover{ border-color:var(--accent-bright); background:var(--frost); transform:translateY(-2px); }
+  .hero-arrow svg{ width:18px; height:18px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:13px 24px; border-radius:8px;
+    font-weight:700; font-size:.92rem;
+    text-decoration:none; border:1px solid transparent;
+    transition:transform .15s, background .15s, border-color .15s;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn-primary{ background:var(--accent-bright); color:#04141B; }
+  .btn-primary:hover{ background:#7FD4F2; }
+  .btn-ghost{ border-color:rgba(244,250,251,.4); color:#F4FAFB; }
+  .btn-ghost:hover{ border-color:#F4FAFB; }
+
+  /* ---------- section shell ---------- */
+  section{ padding:40px 0; }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:24px; margin-bottom:52px; flex-wrap:wrap;
+  }
+  .section-head h2, .product-card h3{ font-size:clamp(1rem, 2vw, 2rem); font-weight:800; letter-spacing:-.01em; line-height:1.02; }
+  .section-head h2{ margin-top:8px; }
+  .section-head p{ color:var(--ink-soft); max-width:52ch; line-height:1.6; margin:0; font-weight:400; }
+
+  /* ---------- products ---------- */
+  .products{ background:transparent; }
+  .product-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:28px;
+  }
+  .product-card{
+    background:var(--frost);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:34px 28px 28px;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  .product-art{
+    height:168px; display:flex; align-items:center; justify-content:center;
+  }
+  .product-art svg{ height:100%; }
+  .product-art.product-photo{
+    height:220px; width:100%;
+  }
+  .product-art.product-photo img{
+    width:100%; height:100%; object-fit:contain;
+  }
+  .product-art.product-photo-pair{
+    display:flex; align-items:center; justify-content:center; gap:4px;
+  }
+  .product-art.product-photo-pair img{
+    width:50%; height:100%; object-fit:contain;
+  }
+  .product-card p{ color:var(--ink-soft); line-height:1.6; margin:0; font-size:.92rem; font-weight:400; }
+  .spec-row{
+    display:flex; justify-content:space-between; gap:12px;
+    font-family:'Montserrat', sans-serif; font-size:.7rem; font-weight:600;
+    letter-spacing:.03em; text-transform:uppercase;
+    color:var(--ink-soft); border-top:1px dashed var(--line);
+    padding-top:12px; margin-top:auto;
+  }
+  .spec-row b{ color:var(--ink); font-weight:700; }
+
+  /* ---------- logistics strip ---------- */
+  .logistics{
+    background:
+      linear-gradient(120deg, rgba(7,13,19,.6), rgba(7,13,19,.35)),
+      url('images/depacho-hielo-escama-tubo-frappé.jpg');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    color:#F4FAFB; padding:48px 0;
+    min-height:clamp(180px, 15vw, 260px);
+    display:flex; align-items:center;
+  }
+  .logistics > .wrap{ width:100%; }
+  .logistics .wrap{
+    display:flex; align-items:center; gap:32px; flex-wrap:wrap;
+  }
+  .logistics-icon{
+    flex:none; width:74px; height:74px; border-radius:16px;
+    background:rgba(244,250,251,.14);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .logistics-icon svg{ width:38px; height:38px; }
+  .logistics-text h3{
+    font-size:clamp(1rem, 2vw, 2rem);
+  }
+  .logistics-text p{
+    margin:6px 0 0; color:#DFF4FA; max-width:62ch; line-height:1.6; font-size:.94rem; font-weight:400;
+  }
+
+  /* ---------- reviews ---------- */
+  .reviews{ background:transparent; }
+  .reviews-top{
+    display:flex; align-items:center; gap:18px; margin-bottom:44px; flex-wrap:wrap;
+  }
+  .g-badge{
+    display:flex; align-items:center; gap:12px;
+    border:1px solid var(--line); border-radius:12px;
+    padding:12px 18px; background:var(--frost);
+  }
+  .g-badge .score{ font-family:'Montserrat',sans-serif; font-size:1.9rem; font-weight:800; }
+  .g-badge .stars{ color:#F2A93B; letter-spacing:2px; font-size:.9rem; }
+  .g-badge .meta{ font-size:.68rem; font-weight:600; letter-spacing:.06em; color:var(--ink-soft); }
+  .template-flag{
+    font-family:'Montserrat', sans-serif; font-size:.66rem; font-weight:600;
+    color:var(--ink-soft); border:1px dashed var(--line);
+    border-radius:999px; padding:6px 14px;
+  }
+  .review-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .review-card{
+    border:1px solid var(--line); border-radius:14px; padding:26px;
+    background:var(--bg); display:flex; flex-direction:column; gap:14px;
+  }
+  .review-card .stars{ color:#F2A93B; font-size:.9rem; letter-spacing:2px; }
+  .review-card p{ margin:0; line-height:1.6; font-size:.92rem; font-weight:400; font-style:italic; color:var(--ink); }
+  .review-who{ display:flex; align-items:center; gap:10px; margin-top:auto; }
+  .avatar{
+    width:34px; height:34px; border-radius:50%;
+    background:var(--accent); color:var(--on-accent);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Montserrat',sans-serif; font-weight:800; font-size:.95rem;
+  }
+  .review-who span{ font-size:.8rem; color:var(--ink-soft); font-weight:600; font-style:normal; }
+  .reviews-cta{ text-align:center; margin-top:40px; }
+  .link-arrow{
+    color:var(--accent-bright); font-weight:700; text-decoration:none;
+    border-bottom:1px solid currentColor; padding-bottom:2px;
+  }
+
+  /* ---------- footer ---------- */
+  footer{ background:transparent; border-top:1px solid var(--line); }
+  .footer-grid{
+    display:grid; grid-template-columns:1fr 1fr 1.2fr; gap:48px;
+    padding:48px 0 32px;
+  }
+  .footer-brand .brand-row{ display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .footer-brand .logo-mark{ width:60px; height:60px; }
+  .footer-brand .brand-name{ font-size:1.3rem; }
+  .footer-col h4{
+    font-family:'Montserrat',sans-serif; font-size:.68rem; font-weight:700;
+    letter-spacing:.16em; text-transform:uppercase; color:var(--ink-soft);
+    margin:0 0 16px;
+  }
+  .footer-info p{ margin:0 0 10px; line-height:1.6; font-size:.9rem; font-weight:400; }
+  .footer-info a{ text-decoration:none; }
+  .footer-info a:hover{ color:var(--accent-bright); }
+  .footer-col h4.footer-social-title{ margin-top:36px; }
+  .footer-social{ display:flex; gap:14px; margin-top:10px; }
+  .footer-social .icon-btn{ width:70px; height:70px; }
+  .footer-social .icon-btn svg{ width:40px; height:40px; }
+  .contact-form{ display:flex; flex-direction:column; gap:12px; }
+  .contact-form input, .contact-form textarea{
+    width:100%; padding:11px 14px; border-radius:8px;
+    border:1px solid var(--line); background:var(--frost); color:var(--ink);
+    font:inherit; font-size:.88rem; resize:vertical;
+  }
+  .contact-form input::placeholder, .contact-form textarea::placeholder{ color:var(--ink-soft); }
+  .contact-form input:focus, .contact-form textarea:focus{
+    outline:none; border-color:var(--accent-bright);
+  }
+  .contact-form .form-submit{
+    align-self:flex-start; margin-top:4px; border:none; cursor:pointer;
+  }
+  .form-note{ font-size:.72rem; color:var(--ink-soft); margin:0; }
+  .map-card{
+    border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    background:var(--surface); box-shadow:var(--shadow);
+  }
+  .map-visual{
+    height:200px; position:relative;
+  }
+  .map-visual iframe{
+    width:100%; height:100%; border:0; display:block;
+    filter:saturate(.9) contrast(1.05);
+  }
+  .map-details{ padding:18px 20px; display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; }
+  .map-details address{ font-style:normal; font-size:.86rem; font-weight:400; line-height:1.5; color:var(--ink-soft); }
+  .map-details b{ display:block; color:var(--ink); font-size:.96rem; font-weight:700; margin-bottom:2px; }
+  .btn-map{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--accent); color:var(--on-accent);
+    padding:10px 18px; border-radius:8px; font-weight:700; font-size:.82rem;
+    text-decoration:none; white-space:nowrap;
+  }
+  .btn-map:hover{ background:var(--accent-deep); }
+  .btn-map svg{ width:15px; height:15px; }
+  .footer-bottom{
+    border-top:1px solid var(--line);
+    padding:22px 0; font-size:.76rem; font-weight:500; color:var(--ink-soft);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+
+  /* ---------- floating whatsapp ---------- */
+  .fab-wa{
+    position:fixed; right:22px; bottom:22px; z-index:50;
+    width:58px; height:58px; border-radius:50%;
+    background:var(--accent); color:var(--on-accent);
+    display:flex; align-items:center; justify-content:center;
+    text-decoration:none; box-shadow:var(--shadow);
+    transition:transform .15s, background .15s;
+  }
+  .fab-wa:hover{ transform:translateY(-3px) scale(1.03); background:var(--accent-deep); }
+  .fab-wa svg{ width:27px; height:27px; }
+
+  @media (max-width:860px){
+    .product-grid, .review-grid{ grid-template-columns:1fr; }
+    .footer-grid{ grid-template-columns:1fr; gap:40px; }
+    .hero-inner{ padding-top:130px; }
+    .header-row{ padding:14px 32px; }
+  }
+  @media (max-width:639px){
+    .hero{ min-height:0; }
+    .hero-inner{ padding-top:160px; }
+    .hero h1{ font-size:1.7rem; }
+    .hero p{ font-size:1rem; }
+    .hero-cta .btn{ flex:1 1 100%; justify-content:center; }
+    .logistics{
+      background:
+        linear-gradient(180deg, rgba(7,13,19,.35), rgba(7,13,19,.85)),
+        url('images/despacho_hielo_hyh.jpg');
+      background-size:cover; background-position:center;
+      padding:40px 0;
+    }
+    .logistics .wrap{ gap:20px; }
+    .logistics-text .eyebrow{ line-height:1.5; margin:0 0 10px; }
+  }
+  /* ---------- animaciones ---------- */
+  .hero-copy, .hero-photo-wrap{
+    opacity:0; transform:translateY(20px);
+    animation:heroIn .7s ease forwards;
+  }
+  .hero-photo-wrap{ animation-delay:.15s; }
+  @keyframes heroIn{ to{ opacity:1; transform:translateY(0); } }
+
+  .section-head, .product-card, .logistics-icon, .logistics-text, .review-card, .map-card{
+    opacity:0; transform:translateY(24px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .section-head.is-visible, .product-card.is-visible, .logistics-icon.is-visible,
+  .logistics-text.is-visible, .review-card.is-visible, .map-card.is-visible{
+    opacity:1; transform:translateY(0);
+  }
+  .product-grid .product-card:nth-child(2){ transition-delay:.1s; }
+  .product-grid .product-card:nth-child(3){ transition-delay:.2s; }
+  .logistics-text{ transition-delay:.1s; }
+  .review-grid .review-card:nth-child(2){ transition-delay:.08s; }
+  .review-grid .review-card:nth-child(3){ transition-delay:.16s; }
+  .review-grid .review-card:nth-child(4){ transition-delay:.24s; }
+  .review-grid .review-card:nth-child(5){ transition-delay:.32s; }
+  .review-grid .review-card:nth-child(6){ transition-delay:.4s; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; animation:none !important; }
+    .hero-copy, .hero-photo-wrap, .section-head, .product-card, .logistics-icon,
+    .logistics-text, .review-card, .map-card{ opacity:1 !important; transform:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<div class="page-mesh">
+  <span class="blob blob-1"></span>
+  <span class="blob blob-2"></span>
+  <span class="blob blob-3"></span>
+  <span class="blob blob-4"></span>
+  <span class="blob blob-5"></span>
+</div>
+
+<header>
+  <div class="header-row wrap">
+    <a class="brand" href="#top" aria-label="HyH">
+      <img class="logo-mark" src="images/logo-header.png" alt="HyH Hielos">
+    </a>
+    <nav class="nav-links">
+      <a href="#top">Inicio</a>
+      <a href="#productos">Productos</a>
+      <a href="#despacho">Despacho</a>
+      <a href="#resenas">Reseñas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="header-actions">
+      <a class="icon-btn" href="https://instagram.com/hielos_hyh" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+      </a>
+      <!-- EDITAR: enlace real de Facebook -->
+      <a class="icon-btn" href="https://facebook.com/hielos.hyh" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 8.5h-2a1.5 1.5 0 0 0-1.5 1.5V12H15l-.5 3H11.5v7h-3v-7H6v-3h2.5v-2.4C8.5 7.3 10 6 12.4 6H15v2.5Z"/></svg>
+      </a>
+      <a class="whatsapp-chip" href="https://wa.me/56957057807" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8.9-.2.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.2-.4.1-.2 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9 0 1.1.8 2.2.9 2.4.1.2 1.6 2.5 4 3.5.6.2 1 .4 1.3.5.6.2 1.1.1 1.5-.1.5-.2 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.5-.3Z"/></svg>
+        Escríbenos
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO / FOTO EXTENDIDA ============ -->
+<div id="top" class="hero">
+  <div class="hero-inner">
+
+    <div class="hero-content-row">
+      <div class="hero-copy">
+        <h1><em>SOMOS HIELOS HYH</em><br><em class="h1-accent">PREMIUM QUALITY ICE</em></h1>
+        <p>Fabricamos y distribuímos hielo tubo, frappé y escama para restaurantes, bares, comercio y eventos. <br> Todos nuestros productos se elaboran con agua purificada.</eventos>
+          </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="https://wa.me/56957057807" target="_blank" rel="noopener">Cotizar por WhatsApp</a>
+          <a class="btn btn-ghost" href="#productos">Ver productos</a>
+        </div>
+      </div>
+      <div class="hero-photo-wrap">
+        <img class="hero-title-photo" src="images/foto-hero4.png" alt="Hielos HyH">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PRODUCTOS ============ -->
+<section class="products" id="productos">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Catálogo</p>
+        <h2>Tres formatos de alta calidad</h2>
+      </div>
+    </div>
+
+    <div class="product-grid">
+
+      <!-- Hielo Tubo -->
+       
+      <article class="product-card">
+        <div class="product-art product-photo"><img src="images/hielo-tubo_-poruña.jpg" alt=""></div> 
+        <h3>Hielo Tubo</h3>
+        <p>Hielo tubo para enfriar lentamente</p>
+        <div class="spec-row"><span>Presentación</span><b>Bolsa 1 kg <br>Bolsa 2 Kg</b></div>
+        <div class="spec-row"><span>Uso ideal</span><b>Coctelería</b></div>
+      </article>
+
+      <!-- Frappé -->
+      <article class="product-card">
+        <div class="product-art product-photo"><img src="images/hielo-frappé_poruña.jpg" alt=""></div> 
+        <h3>Hielo Frappé</h3>
+        <p> Hielo fragmentado que otorga un golpe de frío en las bebidas</p>
+        <div class="spec-row"><span>Presentación</span><b>Bolsa de 1 Kg</b></div>
+        <div class="spec-row"><span>Uso ideal</span><b>Coctelería</b></div>
+      </article>
+
+      <!-- Escama -->
+      <article class="product-card">
+        <div class="product-art product-photo"> <img src="images/hielo-escam_poruña.jpg" alt=""></div>
+        <h3>Hielo Escama</h3>
+        <p>Láminas delgadas perfectas para la conservación de alimentos y bebidas.</p>
+        <div class="spec-row"><span>Presentación</span><b>Saco 12 kg <br>Saco 25 Kg</b></div>
+        <div class="spec-row"><span>Uso ideal</span><b>Conservación</b></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ LOGÍSTICA / CAMIONES CLIMATIZADOS ============ -->
+<section class="logistics" id="despacho">
+  <div class="wrap">
+    <div class="logistics-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#F4FAFB" stroke-width="1.6"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/><path d="M9 3v2M6 3v2M12 3v2" stroke-linecap="round"/></svg>
+    </div>
+    <div class="logistics-text">
+      <p class="eyebrow" style="color:#BEEBF7;">Entrega de productos sin perder cadena de frío</p>
+      <h3>Despacho en camiones climatizados <br> Y SIN COSTO </h3>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESEÑAS GOOGLE ============ -->
+<section class="reviews" id="resenas">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Clientes felices: nuestra misión </p>
+        <h2>RESEÑAS GOOGLE</h2>
+      </div>
+    </div>
+
+    <div class="reviews-top">
+      <div class="g-badge">
+        <div class="score">4.8</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="meta">GOOGLE BUSINESS PROFILE</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-grid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Excelente, productos de muy buena calidad, ambiente amable. Recomendado para quienes necesitan un buen hielo."</p>
+        <div class="review-who"><div class="avatar">D</div><span>Diego Marin</span></div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Muy buena atención, rápidos y buenos productos, el horario del fin de semana es ideal para los que trabajamos en comida rápida."</p>
+        <div class="review-who"><div class="avatar">C</div><span>Co2 Chile</span></div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Tienen los mejores precios que he encontrado en el mercado, la atención es excelente. Si necesitan hielos no duden en comprar aquí."</p>
+        <div class="review-who"><div class="avatar">C</div><span>Constanza Astudillo Pavez</span></div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Precios muy convenientes, además la atención fue super rápida. Lo recomiendo."</p>
+        <div class="review-who"><div class="avatar">A</div><span>Amalia Galli</span></div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Excelente lugar y atención. 100% recomendado. Los mejores hielos que puedes encontrar."</p>
+        <div class="review-who"><div class="avatar">D</div><span>Diego Viera</span></div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Excelente atención y el lugar se ve limpio y ordenado, además con buenos precios."</p>
+        <div class="review-who"><div class="avatar">J</div><span>Jesus Mateus</span></div>
+      </div>
+    </div>
+
+    <div class="reviews-cta">
+      <a class="link-arrow" href="https://share.google/Yc34LOatoR9eGYrkL" target="_blank" rel="noopener">Ver todas las reseñas en Google →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer id="contacto">
+  <div class="wrap">
+    <div class="footer-grid">
+
+      <div class="footer-col footer-brand">
+        <h4>HORARIOS</h4>
+        <div class="brand-row">
+          <span class="brand-name"></span>
+          <span class="brand-sub"></span>
+        </div>
+        <div class="footer-info">
+          <!-- EDITAR: correo y horario reales -->
+          <p>Lunes a Sábado : 07:00 - 19:00 hrs</p>
+          <p>Domingo : 09.00 - 14.00 hrs</p>
+        </div>
+        <h4 class="footer-social-title">SÍGUENOS EN REDES SOCIALES</h4>
+        <div class="footer-social">
+          <a class="icon-btn" href="https://instagram.com/hielos_hyh" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+          </a>
+          <a class="icon-btn" href="https://facebook.com/hielos.hyh" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 8.5h-2a1.5 1.5 0 0 0-1.5 1.5V12H15l-.5 3H11.5v7h-3v-7H6v-3h2.5v-2.4C8.5 7.3 10 6 12.4 6H15v2.5Z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Ubicación</h4>
+        <div class="map-card">
+          <div class="map-visual">
+            <iframe
+              src="https://www.google.com/maps?q=Benedicto+XV+356,+Estaci%C3%B3n+Central,+Santiago,+Chile&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Ubicación Fábrica de Hielos HyH"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="map-details">
+            <address>
+              <b>FÁBRICA DE HIELOS HYH </b>
+              Benedicto XV #356,<br>Estación Central · Santiago
+            </address>
+            <a class="btn-map" href="https://www.google.com/maps/search/?api=1&query=Benedicto+XV+356+Estaci%C3%B3n+Central+Santiago" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M17 7H9M17 7v8"/></svg>
+              Cómo llegar
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Escríbenos</h4>
+        <form class="contact-form" action="https://formsubmit.co/hieloshyh@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Nuevo mensaje desde hieloshyh.cl">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="text" name="Nombre" placeholder="Nombre" required>
+          <input type="email" name="Email" placeholder="Correo electrónico" required>
+          <input type="tel" name="Teléfono" placeholder="Teléfono (opcional)">
+          <textarea name="Mensaje" placeholder="Cuéntanos qué necesitas..." rows="4" required></textarea>
+          <button type="submit" class="btn btn-primary form-submit">Enviar mensaje</button>
+          <p class="form-note">Te responderemos a la brevedad.</p>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> BRUTAL MEDIA. TODOS LOS DERECHOS RESERVADOS </span>
+      <span>HIELOS HYH | PREMIUM QUALITY ICE</span>
+    </div>
+  </div>
+</footer>
+<a class="hero-arrow" href="#top" aria-label="Volver al inicio">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</a>
+<a class="fab-wa" href="https://wa.me/56957057807" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8.9-.2.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.2-.4.1-.2 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9 0 1.1.8 2.2.9 2.4.1.2 1.6 2.5 4 3.5.6.2 1 .4 1.3.5.6.2 1.1.1 1.5-.1.5-.2 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.5-.3Z"/></svg>
+</a>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const heroArrow = document.querySelector('.hero-arrow');
+  const hero = document.querySelector('.hero');
+  function toggleHeroArrow(){
+    heroArrow.classList.toggle('is-visible', window.scrollY > hero.offsetHeight - 120);
+  }
+  window.addEventListener('scroll', toggleHeroArrow, { passive:true });
+  toggleHeroArrow();
+
+  const revealEls = document.querySelectorAll('.section-head, .product-card, .logistics-icon, .logistics-text, .review-card, .map-card');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold:0.15 });
+  revealEls.forEach((el) => revealObserver.observe(el));
+</script>
+
+</body>
+</html>
