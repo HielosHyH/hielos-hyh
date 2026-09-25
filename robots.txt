@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hieloshyh.cl/sitemap.xml
