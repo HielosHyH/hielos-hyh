@@ -918,23 +918,38 @@
     if (window.innerWidth > 860) closeMenu();
   });
 
-  // Formulario de contacto: si hay link de Google Sheets, cada consulta se guarda en la planilla
-  // (y la planilla avisa por correo). Mientras esté vacío, se usa el envío normal por formsubmit.
+  // Formulario de contacto: las consultas llegan a hieloshyh@gmail.com vía FormSubmit, sin salir de la página.
+  // Si se completa SHEETS_URL (Google Sheets), en su lugar se guardan en la planilla, que también avisa por correo.
+  const CONTACT_EMAIL = 'hieloshyh@gmail.com';
   const SHEETS_URL = '';
   const contactForm = document.querySelector('.contact-form');
   const formNote = document.getElementById('formNote');
   const submitBtn = contactForm.querySelector('.form-submit');
   contactForm.addEventListener('submit', async (event) => {
-    if (!SHEETS_URL) return;
     event.preventDefault();
     if (contactForm.elements['_honey'].value) return;
-    const data = new URLSearchParams();
-    ['Nombre', 'Email', 'Teléfono', 'Mensaje'].forEach((name) => data.append(name, contactForm.elements[name].value.trim()));
-    data.append('Acepta novedades', contactForm.elements['Acepta novedades'].checked ? 'Sí' : 'No');
+    const fields = {};
+    ['Nombre', 'Email', 'Teléfono', 'Mensaje'].forEach((name) => { fields[name] = contactForm.elements[name].value.trim(); });
+    fields['Acepta novedades'] = contactForm.elements['Acepta novedades'].checked ? 'Sí' : 'No';
     submitBtn.disabled = true;
     submitBtn.textContent = 'Enviando...';
     try {
-      await fetch(SHEETS_URL, { method:'POST', mode:'no-cors', body:data });
+      if (SHEETS_URL) {
+        await fetch(SHEETS_URL, { method:'POST', mode:'no-cors', body:new URLSearchParams(fields) });
+      } else {
+        const response = await fetch('https://formsubmit.co/ajax/' + CONTACT_EMAIL, {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+          body:JSON.stringify({
+            ...fields,
+            _subject:'Nueva consulta desde hieloshyh.cl: ' + fields['Nombre'],
+            _replyto:fields['Email'],
+            _template:'table',
+          }),
+        });
+        const result = await response.json();
+        if (String(result.success) !== 'true') throw new Error(result.message || 'Envío rechazado');
+      }
       contactForm.reset();
       formNote.textContent = '¡Gracias! Recibimos tu mensaje y te responderemos a la brevedad.';
       formNote.classList.add('is-success');
