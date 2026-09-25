@@ -187,9 +187,11 @@
   }
   .menu-toggle:hover{ border-color:var(--accent); color:var(--accent-bright); }
   .menu-toggle svg{ width:19px; height:19px; }
-  .menu-toggle .icon-close{ display:none; }
-  .menu-toggle[aria-expanded="true"] .icon-open{ display:none; }
-  .menu-toggle[aria-expanded="true"] .icon-close{ display:block; }
+  .menu-toggle{ position:relative; }
+  .menu-toggle svg{ position:absolute; transition:opacity .25s ease, transform .3s ease; }
+  .menu-toggle .icon-close{ opacity:0; transform:rotate(-90deg); }
+  .menu-toggle[aria-expanded="true"] .icon-open{ opacity:0; transform:rotate(90deg); }
+  .menu-toggle[aria-expanded="true"] .icon-close{ opacity:1; transform:none; }
   @media (max-width:860px){
     .header-row{ display:flex; justify-content:space-between; padding:14px 20px; position:relative; }
     .logo-mark{ height:56px; }
