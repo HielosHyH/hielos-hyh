@@ -216,6 +216,12 @@
     .nav-links a:last-child{ border-bottom:none; }
   }
 
+  /* Celulares pequeños: sin los íconos de redes en el header (siguen en el footer) para que el logo no se aplaste */
+  @media (max-width:379px){
+    .header-actions .icon-btn{ display:none; }
+    .brand{ flex:none; }
+  }
+
   /* ---------- page-wide gradient mesh ---------- */
   .page-mesh{
     position:fixed; inset:0; z-index:-1; overflow:hidden;
