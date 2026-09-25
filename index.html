@@ -462,6 +462,15 @@
     align-self:flex-start; margin-top:4px; border:none; cursor:pointer;
   }
   .form-note{ font-size:.72rem; color:var(--ink-soft); margin:0; }
+  .form-note.is-success{ color:var(--accent-bright); font-weight:600; }
+  .form-consent{
+    display:flex; align-items:flex-start; gap:10px; cursor:pointer;
+    font-size:.8rem; line-height:1.4; color:var(--ink-soft);
+  }
+  .contact-form .form-consent input[type="checkbox"]{
+    flex:none; width:18px; height:18px; margin:0; padding:0;
+    accent-color:var(--accent-bright); cursor:pointer;
+  }
   .map-card{
     border:1px solid var(--line); border-radius:14px; overflow:hidden;
     background:var(--surface); box-shadow:var(--shadow);
@@ -856,8 +865,12 @@
           <input type="email" name="Email" placeholder="Correo electrónico" required>
           <input type="tel" name="Teléfono" placeholder="Teléfono (opcional)">
           <textarea name="Mensaje" placeholder="Cuéntanos qué necesitas..." rows="4" required></textarea>
+          <label class="form-consent">
+            <input type="checkbox" name="Acepta novedades" value="Sí">
+            <span>Acepto recibir novedades y ofertas de Hielos HyH</span>
+          </label>
           <button type="submit" class="btn btn-primary form-submit">Enviar mensaje</button>
-          <p class="form-note">Te responderemos a la brevedad.</p>
+          <p class="form-note" id="formNote">Te responderemos a la brevedad.</p>
         </form>
       </div>
 
@@ -903,6 +916,35 @@
   mobileNav.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
   window.addEventListener('resize', () => {
     if (window.innerWidth > 860) closeMenu();
+  });
+
+  // Formulario de contacto: si hay link de Google Sheets, cada consulta se guarda en la planilla
+  // (y la planilla avisa por correo). Mientras esté vacío, se usa el envío normal por formsubmit.
+  const SHEETS_URL = '';
+  const contactForm = document.querySelector('.contact-form');
+  const formNote = document.getElementById('formNote');
+  const submitBtn = contactForm.querySelector('.form-submit');
+  contactForm.addEventListener('submit', async (event) => {
+    if (!SHEETS_URL) return;
+    event.preventDefault();
+    if (contactForm.elements['_honey'].value) return;
+    const data = new URLSearchParams();
+    ['Nombre', 'Email', 'Teléfono', 'Mensaje'].forEach((name) => data.append(name, contactForm.elements[name].value.trim()));
+    data.append('Acepta novedades', contactForm.elements['Acepta novedades'].checked ? 'Sí' : 'No');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+    try {
+      await fetch(SHEETS_URL, { method:'POST', mode:'no-cors', body:data });
+      contactForm.reset();
+      formNote.textContent = '¡Gracias! Recibimos tu mensaje y te responderemos a la brevedad.';
+      formNote.classList.add('is-success');
+    } catch (error) {
+      formNote.textContent = 'No pudimos enviar tu mensaje. Escríbenos por WhatsApp al +56 9 5705 7807.';
+      formNote.classList.remove('is-success');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Enviar mensaje';
+    }
   });
 
   // El banner de despacho queda centrado en la pantalla al ir a él desde el menú
