@@ -281,9 +281,7 @@
     color:#FFFFFF;
   }
   .hero h1 em{ font-style:normal; font-weight:800; color:#FFFFFF; }
-  @media (min-width:861px){
-    .hero h1 em{ white-space:nowrap; }
-  }
+  .hero h1 em{ white-space:nowrap; }
   .hero h1 em.h1-accent{ color:var(--accent-bright); }
   .hero-content-row{ display:flex; align-items:stretch; gap:clamp(40px, 5vw, 96px); flex-wrap:wrap; }
   .hero-copy{ flex:1 1 0; min-width:240px; }
@@ -635,7 +633,7 @@
   @media (max-width:639px){
     .hero{ min-height:0; }
     .hero-inner{ padding-top:108px; }
-    .hero h1{ font-size:1.7rem; }
+    .hero h1{ font-size:min(6.1vw, 1.7rem); }
     .hero p{ font-size:.9rem; line-height:1.4; margin-top:12px; }
     .hero-cta .btn{ flex:1 1 100%; justify-content:center; }
     .hero-content-row{ flex-direction:column; gap:22px; }
