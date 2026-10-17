@@ -406,9 +406,12 @@
     font-family:'Montserrat', sans-serif; font-size:.7rem; font-weight:600;
     letter-spacing:.03em; text-transform:uppercase;
     color:var(--ink-soft); border-top:1px dashed var(--line);
-    padding-top:12px; margin-top:auto;
+    padding-top:12px; line-height:1.45;
   }
   .spec-row b{ color:var(--ink); font-weight:700; }
+  /* Bloque de especificaciones anclado abajo; la fila Presentación reserva 3 líneas
+     para que las líneas punteadas queden a la misma altura en las tres tarjetas */
+  .product-card p + .spec-row{ margin-top:auto; min-height:calc(14px + 3 * 1.45em); }
   @media (min-width:861px){
     .product-grid{
       grid-template-columns:repeat(3, minmax(0, 420px));
