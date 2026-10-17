@@ -70,10 +70,15 @@
   }
 }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400..800;1,400&display=swap">
+<link rel="preload" href="fonts/montserrat-latin-var.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  @font-face{ font-family:'Montserrat'; font-style:italic; font-weight:400; font-display:swap;
+    src:url('fonts/montserrat-latin-italic-400.woff2') format('woff2');
+    unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face{ font-family:'Montserrat'; font-style:normal; font-weight:400 800; font-display:swap;
+    src:url('fonts/montserrat-latin-var.woff2') format('woff2');
+    unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
 
   :root{
     --bg:#070D13;
@@ -574,7 +579,7 @@
     background:var(--surface); box-shadow:var(--shadow);
   }
   .map-visual{
-    height:200px; position:relative;
+    height:200px; position:relative; background:var(--surface);
   }
   @media (min-width:861px){
     .footer-grid{
@@ -690,7 +695,7 @@
     .logistics{
       background:
         linear-gradient(180deg, rgba(7,13,19,.35), rgba(7,13,19,.85)),
-        url('images/depacho-hielo-escama-tubo-frappé.webp');
+        url('images/despacho-1000.webp');
       background-size:cover; background-position:center;
       padding:40px 0;
     }
@@ -698,12 +703,7 @@
     .logistics-text .eyebrow{ line-height:1.4; margin:0 0 4px; font-size:min(3.4vw, .8rem); }
   }
   /* ---------- animaciones ---------- */
-  .hero-copy, .hero-photo-wrap{
-    opacity:0; transform:translateY(20px);
-    animation:heroIn .7s ease forwards;
-  }
-  .hero-photo-wrap{ animation-delay:.15s; }
-  @keyframes heroIn{ to{ opacity:1; transform:translateY(0); } }
+  /* El hero no se anima: es lo primero que se ve y debe pintarse sin demora */
 
   .section-head, .product-card, .logistics-icon, .logistics-text, .review-card, .map-card{
     opacity:0; transform:translateY(24px);
@@ -786,7 +786,7 @@
         </div>
       </div>
       <div class="hero-photo-wrap">
-        <img class="hero-title-photo" src="images/foto-hero4.webp" width="1681" height="936" fetchpriority="high" decoding="async" alt="Bolsas de hielo tubo, frappé y escama Hielos HyH">
+        <img class="hero-title-photo" src="images/foto-hero4.webp" srcset="images/foto-hero4-640.webp 640w, images/foto-hero4-1000.webp 1000w, images/foto-hero4.webp 1681w" sizes="(max-width:639px) 100vw, 50vw" width="1681" height="936" fetchpriority="high" decoding="async" alt="Bolsas de hielo tubo, frappé y escama Hielos HyH">
       </div>
     </div>
   </div>
@@ -807,7 +807,7 @@
       <!-- Hielo Tubo -->
        
       <article class="product-card">
-        <div class="product-art product-photo"><img src="images/hielo-tubo_-poruña.webp" width="1024" height="1024" alt="Hielo tubo en poruña, venta en bolsas de 1, 2 y 5 kg" loading="lazy"></div> 
+        <div class="product-art product-photo"><img src="images/hielo-tubo_-poruña.webp" srcset="images/tubo-512.webp 512w, images/hielo-tubo_-poruña.webp 1024w" sizes="(max-width:639px) 60vw, 380px" width="1024" height="1024" alt="Hielo tubo en poruña, venta en bolsas de 1, 2 y 5 kg" loading="lazy"></div> 
         <h3>Hielo Tubo</h3>
         <p>Hielo macizo para un frío controlado.</p>
         <div class="spec-row"><span>Presentación</span><b>Bolsa 1 kg <br>Bolsa 2 Kg <br>Bolsa 5 Kg</b></div>
@@ -816,7 +816,7 @@
 
       <!-- Frappé -->
       <article class="product-card">
-        <div class="product-art product-photo"><img src="images/hielo-frappé_poruña.webp" width="1024" height="1024" alt="Hielo frappé en poruña, venta en bolsa de 1 kg" loading="lazy"></div> 
+        <div class="product-art product-photo"><img src="images/hielo-frappé_poruña.webp" srcset="images/frappe-512.webp 512w, images/hielo-frappé_poruña.webp 1024w" sizes="(max-width:639px) 60vw, 380px" width="1024" height="1024" alt="Hielo frappé en poruña, venta en bolsa de 1 kg" loading="lazy"></div> 
         <h3>Hielo Frappé</h3>
         <p> Hielo fragmentado que otorga un golpe de frío en las bebidas.</p>
         <div class="spec-row"><span>Presentación</span><b>Bolsa de 1 Kg</b></div>
@@ -825,7 +825,7 @@
 
       <!-- Escama -->
       <article class="product-card">
-        <div class="product-art product-photo"> <img src="images/hielo-escam_poruña.webp" width="1024" height="1024" alt="Hielo escama en poruña, venta en sacos de 12 y 25 kg" loading="lazy"></div>
+        <div class="product-art product-photo"> <img src="images/hielo-escam_poruña.webp" srcset="images/escama-512.webp 512w, images/hielo-escam_poruña.webp 1024w" sizes="(max-width:639px) 60vw, 380px" width="1024" height="1024" alt="Hielo escama en poruña, venta en sacos de 12 y 25 kg" loading="lazy"></div>
         <h3>Hielo Escama</h3>
         <p>Láminas delgadas perfectas para la conservación de alimentos y bebidas.</p>
         <div class="spec-row"><span>Presentación</span><b>Saco 12 kg <br>Saco 25 Kg</b></div>
@@ -934,8 +934,7 @@
         <div class="map-card">
           <div class="map-visual">
             <iframe
-              src="https://www.google.com/maps?q=Benedicto+XV+356,+Estaci%C3%B3n+Central,+Santiago,+Chile&output=embed"
-              loading="lazy"
+              data-src="https://www.google.com/maps?q=Benedicto+XV+356,+Estaci%C3%B3n+Central,+Santiago,+Chile&output=embed"
               referrerpolicy="no-referrer-when-downgrade"
               title="Ubicación Fábrica de Hielos HyH"
               allowfullscreen>
@@ -1100,6 +1099,18 @@
     });
   }, { threshold:0.15 });
   revealEls.forEach((el) => revealObserver.observe(el));
+
+  // El mapa (≈500 KB de JS de Google) se carga solo al acercarse al pie de página
+  const mapFrame = document.querySelector('.map-visual iframe[data-src]');
+  if (mapFrame) {
+    const loadMap = () => { mapFrame.src = mapFrame.dataset.src; };
+    if ('IntersectionObserver' in window) {
+      const mapObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) { loadMap(); mapObserver.disconnect(); }
+      }, { rootMargin:'300px' });
+      mapObserver.observe(mapFrame);
+    } else { loadMap(); }
+  }
 </script>
 
 </body>
