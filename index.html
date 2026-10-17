@@ -304,7 +304,7 @@
     color:var(--accent-bright);
   }
   .hero h1{
-    font-size:clamp(1rem, 2.7vw, 3.4rem);
+    font-size:clamp(1rem, 2.4vw, 3.1rem);
     font-weight:800;
     text-transform:none;
     letter-spacing:-.01em;
@@ -312,7 +312,11 @@
   }
   .hero h1 em{ font-style:normal; font-weight:800; color:#FFFFFF; }
   .hero h1 em{ white-space:nowrap; }
-  .hero h1 em.h1-accent{ color:var(--accent-bright); }
+  .hero h1 em.h1-accent{ color:var(--accent-bright); white-space:normal; }
+  .hero-kicker{
+    font-size:clamp(.68rem, .9vw, .82rem); font-weight:600; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--accent-bright); margin-bottom:14px;
+  }
   .hero-content-row{ display:flex; align-items:stretch; gap:clamp(40px, 5vw, 96px); flex-wrap:wrap; }
   .hero-copy{ flex:1 1 0; min-width:240px; }
   .hero-copy p{ width:0; min-width:100%; }
@@ -770,7 +774,8 @@
 
     <div class="hero-content-row">
       <div class="hero-copy">
-        <h1><em>FÁBRICA DE HIELOS HYH</em><br><em class="h1-accent">PREMIUM QUALITY ICE</em></h1>
+        <div class="hero-kicker">HIELOS HYH | PREMIUM QUALITY ICE</div>
+        <h1><em>FÁBRICA DE HIELOS</em><br><em class="h1-accent">CON DESPACHO EN SANTIAGO</em></h1>
         <p>Fabricamos hielo tubo, frappé y escama para restaurantes, bares, comercio y eventos y tenemos despacho en Santiago sin costo. <br> Todos nuestros productos son elaborados con agua purificada.</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="https://wa.me/56957057807" target="_blank" rel="noopener">Cotizar por WhatsApp</a>
